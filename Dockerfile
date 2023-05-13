@@ -14,7 +14,15 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
 	vim \
 	wget \
   sudo \
-  rsyslog \
+  software-properties-common \
+  rsyslog systemd systemd-cron sudo \
     && apt-get purge --auto-remove -y \
     && rm -rf /var/lib/apt/lists/*
+
+
+RUN sed -i 's/^\($ModLoad imklog\)/#\1/' /etc/rsyslog.conf
+RUN rm -f /lib/systemd/system/systemd*udev* \
+  && rm -f /lib/systemd/system/getty.target
+
+VOLUME ["/sys/fs/cgroup", "/tmp", "/run"]
 
