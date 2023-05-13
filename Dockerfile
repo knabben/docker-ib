@@ -12,10 +12,13 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
 	rsync \
 	unzip \
 	vim \
+    auditd \
 	wget \
-  sudo \
-  software-properties-common \
-  rsyslog systemd systemd-cron sudo \
+    software-properties-common \
+    rsyslog \
+    systemd \
+    systemd-cron \
+    sudo \
     && apt-get purge --auto-remove -y \
     && rm -rf /var/lib/apt/lists/*
 
