@@ -1,0 +1,21 @@
+---
+- hosts: all
+  become: yes
+  vars:
+    node_custom_roles_post: ""
+    custom_role_names: ""
+
+  tasks:
+    - include_role:
+        name: node
+    - include_role:
+        name: "{{ role }}"
+      loop: "{{ custom_role_names.split() + node_custom_roles_post.split() }}"
+      loop_control:
+        loop_var: role
+      when: custom_role_names != "" or node_custom_roles_post != ""
+    - include_role:
+        name: sysprep
+
+  environment:
+    PYTHONPATH: "{{ python_path }}"
