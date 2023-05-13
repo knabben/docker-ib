@@ -40,9 +40,10 @@ if ! command -v ansible >/dev/null 2>&1; then
     pip3 install --user ansible
 fi
 
+export PATH=${PATH}:${HOME}/.local/bin
+
 ansible-galaxy collection install \
   community.general \
   community.docker \
   ansible.posix
 
-export PATH=${PATH}:${HOME}/.local/bin
