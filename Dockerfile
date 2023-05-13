@@ -12,20 +12,30 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
 	rsync \
 	unzip \
 	vim \
-    auditd \
+    	auditd \
 	wget \
-    software-properties-common \
-    rsyslog \
-    systemd \
-    systemd-cron \
-    sudo \
-    && apt-get purge --auto-remove -y \
-    && rm -rf /var/lib/apt/lists/*
+    	software-properties-common \
+    	rsyslog \
+    	systemd \
+    	systemd-sysv \
+    	systemd-cron \
+    	sudo \
+	&& apt-get purge --auto-remove -y \
+	&& rm -rf /var/lib/apt/lists/*
 
+RUN cd /lib/systemd/system/sysinit.target.wants/     && rm $(ls | grep -v systemd-tmpfiles-setup) # buildkit
+RUN rm -f /lib/systemd/system/multi-user.target.wants/* \
+	/etc/systemd/system/*.wants/* \
+	/lib/systemd/system/local-fs.target.wants/* \
+	/lib/systemd/system/sockets.target.wants/*udev* \
+	/lib/systemd/system/sockets.target.wants/*initctl* \
+	/lib/systemd/system/basic.target.wants/*     \
+	/lib/systemd/system/anaconda.target.wants/*     \
+	/lib/systemd/system/plymouth*     \
+	/lib/systemd/system/systemd-update-utmp* # buildkit
 
-RUN sed -i 's/^\($ModLoad imklog\)/#\1/' /etc/rsyslog.conf
-RUN rm -f /lib/systemd/system/systemd*udev* \
-  && rm -f /lib/systemd/system/getty.target
+VOLUME [ "/sys/fs/cgroup" ]
 
-VOLUME ["/sys/fs/cgroup", "/tmp", "/run"]
+CMD ["/lib/systemd/systemd"]
+
 

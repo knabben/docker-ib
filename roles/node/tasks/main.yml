@@ -44,11 +44,11 @@
     enabled: false
   when: ansible_os_family != "Debian" and ansible_os_family != "Flatcar"
 
-- name: Ensure auditd is running and comes on at reboot
-  service:
-    name: auditd
-    state: started
-    enabled: yes
+#- name: Ensure auditd is running and comes on at reboot
+#  service:
+#    name: auditd
+#    state: started
+#    enabled: yes
 
 - name: configure auditd rules for containerd
   copy:
@@ -57,16 +57,6 @@
     owner: root
     group: root
     mode: 0644
-  when: ansible_os_family != "Flatcar"
-
-- name: configure auditd rules for containerd (Flatcar)
-  copy:
-    src: etc/audit/rules.d/containerd.rules-flatcar
-    dest: /etc/audit/rules.d/containerd.rules
-    owner: root
-    group: root
-    mode: 0644
-  when: ansible_os_family == "Flatcar"
 
 - name: Ensure reverse packet filtering is set as strict
   sysctl:

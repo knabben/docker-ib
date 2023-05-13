@@ -37,7 +37,7 @@ sudo apt install python3-pip
 
 if ! command -v ansible >/dev/null 2>&1; then
     ensure_py3
-    pip3 install --user "ansible-core==${_version}" ansible
+    pip3 install --user ansible
 fi
 
 ansible-galaxy collection install \
