@@ -39,29 +39,16 @@
   - { path: /etc/machine-id, state: touch,  mode: "{{ machine_id_mode }}" }
   when: ansible_os_family != "Flatcar"
 
-- name: Truncate hostname file
-  file:
-    state: "{{ item.state }}"
-    path: "{{ item.path }}"
-    owner: root
-    group: root
-    mode: "{{ item.mode }}"
-  loop:
-  - { path: /etc/hostname, state: absent, mode: "0644" }
-  - { path: /etc/hostname, state: touch,  mode: "0644" }
-
-- name: Set hostname
-  hostname:
-    name: localhost.local
-  when: ansible_os_family != "VMware Photon OS" and ansible_os_family != "Flatcar" and packer_build_name != "nutanix"
-
-- name: Reset hosts file
-  copy:
-    src: files/etc/hosts
-    dest: /etc/hosts
-    owner: root
-    group: root
-    mode: "0644"
+#- name: Truncate hostname file
+#  file:
+#    state: "{{ item.state }}"
+#    path: "{{ item.path }}"
+#    owner: root
+#    group: root
+#    mode: "{{ item.mode }}"
+#  loop:
+#  - { path: /etc/hostname, state: absent, mode: "0644" }
+#  - { path: /etc/hostname, state: touch,  mode: "0644" }
 
 - name: Truncate audit logs
   file:
